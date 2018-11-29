@@ -89,6 +89,7 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
           .post_form(URI(user_json_url), 'Authorization' => bearer_token)
           .body
       else
+        Rails.logger.warn("OAuth2 Debugging JSON URL: #{user_json_url}") if SiteSetting.oauth2_debug_auth
         open(user_json_url, 'Authorization' => bearer_token).read
       end
 
