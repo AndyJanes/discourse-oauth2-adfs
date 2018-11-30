@@ -1,8 +1,7 @@
-# name: discourse-oauth2-basic
+# name: discourse-oauth2-adfs
 # about: Generic OAuth2 Plugin
-# version: 0.3
-# authors: Robin Ward
-# url: https://github.com/discourse/discourse-oauth2-basic
+# version: 0.1
+# Original url: https://github.com/discourse/discourse-oauth2-basic
 
 require_dependency 'auth/oauth2_authenticator.rb'
 
