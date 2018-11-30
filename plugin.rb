@@ -1,7 +1,7 @@
 # name: discourse-oauth2-adfs
 # about: Generic OAuth2 Plugin
 # version: 0.1
-# Original url: https://github.com/discourse/discourse-oauth2-basic
+# url: https://github.com/discourse/discourse-oauth2-adfs
 
 require_dependency 'auth/oauth2_authenticator.rb'
 
@@ -29,11 +29,11 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
                         opts[:client_id] = SiteSetting.oauth2_client_id
                         opts[:client_secret] = SiteSetting.oauth2_client_secret
                         opts[:provider_ignores_state] = false
-                        opts[:client_options] = {
-                          authorize_url: SiteSetting.oauth2_authorize_url,
-                          token_url: SiteSetting.oauth2_token_url,
-                          token_method: SiteSetting.oauth2_token_url_method.downcase.to_sym
-                        }
+                        #opts[:client_options] = {
+                        #  authorize_url: SiteSetting.oauth2_authorize_url,
+                        #  token_url: SiteSetting.oauth2_token_url,
+                        #  token_method: SiteSetting.oauth2_token_url_method.downcase.to_sym
+                        #}
                         opts[:authorize_options] = SiteSetting.oauth2_authorize_options.split("|").map(&:to_sym)
 
                         if SiteSetting.oauth2_send_auth_header?
@@ -84,14 +84,31 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
     log("Step 1")
     bearer_token = "Bearer #{token}"
     log("Step 2")
+    
+    
+    #
+    #
+    #
+    #
+    
     user_json_response =
       if user_json_method.downcase.to_sym == :post
+        log ("Step 2A")
         Net::HTTP
           .post_form(URI(user_json_url), 'Authorization' => bearer_token)
           .body
       else
+        log("Step 2B")
         open(user_json_url, 'Authorization' => bearer_token).read
       end
+    
+    
+    #
+    #
+    #
+    #
+    #
+    
     log("Step 3")
     user_json = JSON.parse(user_json_response)
     log("Step 4 : > #{user_json_response} <")
