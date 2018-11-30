@@ -79,12 +79,8 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
     user_json_url = SiteSetting.oauth2_user_json_url.sub(':token', token.to_s).sub(':id', id.to_s)
     user_json_method = SiteSetting.oauth2_user_json_url_method
 
-    log("user_json_url: #{user_json_url}")
-        
-    log("Step 1")
     bearer_token = "Bearer #{token}"
-    log("Step 2")
-    
+  
     
     #
     #
