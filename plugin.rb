@@ -80,9 +80,11 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
     user_json_url = SiteSetting.oauth2_user_json_url.sub(':token', token.to_s).sub(':id', id.to_s)
     user_json_method = SiteSetting.oauth2_user_json_url_method
 
-    log("user_json_url: #{user_json_method} #{user_json_url}")
+    log("user_json_url: #{user_json_url}")
         
+    log("Step 1")
     bearer_token = "Bearer #{token}"
+    log("Step 2")
     user_json_response =
       if user_json_method.downcase.to_sym == :post
         Net::HTTP
@@ -91,15 +93,15 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
       else
         open(user_json_url, 'Authorization' => bearer_token).read
       end
-
+    log("Step 3")
     user_json = JSON.parse(user_json_response)
-
-    Rails.logger.warn("OAuth2 Debugging user_Json: #{user_json}") if SiteSetting.oauth2_debug_auth
-
+    log("Step 4 : > #{user_json_response} <")
+    log("Step 5 : > #{user_json} <")
+    
     result = {}
     if user_json.present?    
       json_walk(result, user_json, :user_id)
-      Rails.logger.warn("OAuth2 Debugging user_id in JSON: #{user_id}") if SiteSetting.oauth2_debug_auth
+      log("OAuth2 Debugging user_id in JSON: #{user_id}")
       
       json_walk(result, user_json, :username)
       json_walk(result, user_json, :name)
