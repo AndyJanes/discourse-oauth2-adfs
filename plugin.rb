@@ -29,11 +29,11 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
                         opts[:client_id] = SiteSetting.oauth2_client_id
                         opts[:client_secret] = SiteSetting.oauth2_client_secret
                         opts[:provider_ignores_state] = false
-                        #opts[:client_options] = {
-                        #  authorize_url: SiteSetting.oauth2_authorize_url,
-                        #  token_url: SiteSetting.oauth2_token_url,
-                        #  token_method: SiteSetting.oauth2_token_url_method.downcase.to_sym
-                        #}
+                        opts[:client_options] = {
+                          authorize_url: SiteSetting.oauth2_authorize_url,
+                          token_url: SiteSetting.oauth2_token_url,
+                          token_method: SiteSetting.oauth2_token_url_method.downcase.to_sym
+                        }
                         opts[:authorize_options] = SiteSetting.oauth2_authorize_options.split("|").map(&:to_sym)
 
                         if SiteSetting.oauth2_send_auth_header?
