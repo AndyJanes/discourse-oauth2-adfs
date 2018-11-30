@@ -89,13 +89,12 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
     
     user_json_response =
       if user_json_method.downcase.to_sym == :post
-        log ("Step 2A")
-        Net::HTTP
+          Net::HTTP
           .post_form(URI(user_json_url), 'Authorization' => bearer_token)
           .body
       else
         log("Step 2B")
-        open(user_json_url, 'Authorization' => bearer_token).read
+       # open(user_json_url, 'Authorization' => bearer_token).read
         log("Step 2C")
       end
     
