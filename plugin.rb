@@ -96,6 +96,7 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
       else
         log("Step 2B")
         open(user_json_url, 'Authorization' => bearer_token).read
+        log("Step 2C")
       end
     
     
