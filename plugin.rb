@@ -81,7 +81,7 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
     user_json_method = SiteSetting.oauth2_user_json_url_method
 
     log("user_json_url: #{user_json_method} #{user_json_url}")
-        Rails.logger.warn("OAuth2 Debugging JSON URL: #{user_json_method} #{user_json_url}") if SiteSetting.oauth2_debug_auth
+        
     bearer_token = "Bearer #{token}"
     user_json_response =
       if user_json_method.downcase.to_sym == :post
@@ -94,11 +94,13 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
 
     user_json = JSON.parse(user_json_response)
 
-    log("user_json: #{user_json}")
+    Rails.logger.warn("OAuth2 Debugging user_Json: #{user_json}") if SiteSetting.oauth2_debug_auth
 
     result = {}
-    if user_json.present?
+    if user_json.present?    
       json_walk(result, user_json, :user_id)
+      Rails.logger.warn("OAuth2 Debugging user_id in JSON: #{user_id}") if SiteSetting.oauth2_debug_auth
+      
       json_walk(result, user_json, :username)
       json_walk(result, user_json, :name)
       json_walk(result, user_json, :email)
@@ -115,6 +117,8 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
     token = auth['credentials']['token']
     user_details = fetch_user_details(token, auth['info'][:id])
 
+    Rails.logger.warn("OAuth2 Debugging user_details: #{user_details}") if SiteSetting.oauth2_debug_auth
+    
     result.name = user_details[:name]
     result.username = user_details[:username]
     result.email = user_details[:email]
