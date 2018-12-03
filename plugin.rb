@@ -94,9 +94,11 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
           .body
       else
         log("Step 2B")
-       # open(user_json_url, 'Authorization' => bearer_token).read
+        open(user_json_url, 'Authorization' => bearer_token).read
+        log("Step 2C")
       end
     
+    log("REsult : #{user_json_response}")
     
     #
     #
@@ -105,6 +107,8 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
     #
     
     log("Step 3")
+    log("Token = #{token}")
+    
     ##user_json = JSON.parse(user_json_response)
     user_json = JSON.parse(token)
 
